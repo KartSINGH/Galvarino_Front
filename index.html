@@ -34,6 +34,12 @@
     </script>
 </head>
 <body>
+    <div id="waiting" class="flex-center flex-column">
+        <img src="loading 1.gif" style="height:300px;width:400px" class="mx-auto">
+        <p>&nbsp;</p>
+        <h2>Loading ... </h2>
+        <p>&nbsp;</p>
+    </div>
     <div id="final" class="flex-center flex-column">
         <img src="tick.gif" style="height:300px;width:400px" class="mx-auto">
         <p>&nbsp;</p>
@@ -94,38 +100,50 @@
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <script type="text/javascript" src="./js/mdb.min.js"></script>
     <script type="text/javascript">
-        console.log("Hello")
+        console.log("Hello");
         $('.sub').on('click', function () {
             var email = document.getElementById("email").value;
-            console.log("user enetered" + "email")
+            console.log("user enetered " + email);
             console.log("Click called");
-            if (email)
-                $.ajax({
+             $('#waiting').fadeIn();
+            if (email==""){
+                alert("Please Enter an Email");
+            }
+
+            
+               /* $.ajax({
                     url: "http://api.shuttlescrap.com/register/all_users",
                     type: "GET",
                     success: function (res) {
-                        $('#final').fadeIn();
+                       
                         console.log("success");
                     },
                     error: function () {
                         console.log("Error");
                         alert("ERROR");
                     }
-                });
-            console.log(email);
+                });*/
+           else{
             $.post("http://localhost:8880/raise-request/submit-request", {
                     user_email: email
                 },
                 function (data, status) {
-                    console.log(data);
+                     $('#waiting').fadeOut(1000,function(){
+                         $('#final').fadeIn();
+                     });
+                    console.log("i got this from server : "+data);
+                    
                 });
+           }
         });
+        
         $('#close').on('click', function () {
             console.log("close button called");
             $('#final').fadeOut(1000, function () {
                 $('#final').hide();
             });
-        })
+        });
+        
     </script>
 </body>
 </html>
